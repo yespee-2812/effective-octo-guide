@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        function add(){
+            document.getElementById("myform").style.display="block";
+        }
+        function save(){
+            var emp = {
+                empno : document.getElementById("empno").value,
+                name : document.getElementById("name").value,
+                salary : document.getElementById("salary").value,
+            }
+            console.log(emp);
+            var db = window.indexedDB.open("empdb1",2);
+            db.onupgradeneeded = function(evt) {
+                var conn = evt.currentTarget.result;
+                conn.createObjectStore("employees1",{
+                    keyPath:"empno"
+
+            });
+        }
+            db.onsuccess = function(evt){
+                var conn = evt.currentTarget.result;
+                var tx = conn.transaction("employees1","readwrite");
+                var store = tx.objectStore("employees1");
+                var request = store.put(emp);
+                request.onsuccess = function(evt){
+                    alert("record added successfully");
+                }
+
+            }
+            return false;
+        }
+        function view(){
+            var db = window.indexedDB.open("empDB",1);
+            db.onsuccess=function(evt){
+                var conn=evt.currentTarget.result;
+                var store=conn.transaction("employees").objectStore("employees");
+                var request=store.openCursor();
+                request.onsuccess=function(evt){
+                    var cursor=evt.target.result;
+                    if(cursor){
+                        var emp=cursor.value;
+                        console.log(emp);
+                        cursor.continue();
+                    }
+                }
+
+            }
+        }
+    </script>
+</head>
+<body>
+    <button onclick="addform.style='display: block';">Add an Employee</button>
+    <button onclick="view()">View an employee</button>
+    <form id="addform" onsubmit="return save()" style="display: none;">
+        empno: <input type = "number" id ="empno"/><br/>
+        name:<input type = "text" id = "name"/><br/>
+        salary:<input type = "number"id = "salary"/><br/>
+        <button type = "submit">save</button>
+
+    </form>
+</body>
+</html>

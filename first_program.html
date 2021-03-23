@@ -1,0 +1,28 @@
+ <html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src = "main.js"></script>
+    <script>
+        function start(){
+            var timer  = setInterval(update,1000);
+        function update(){
+            var pb = document.getElementById("pb");
+              pb.value += 5;
+              document.getElementById("sp")
+               if(pb.value == 100)
+                clearInterval(timer);
+ 
+                        }
+         }
+    </script>
+</head>
+<body>
+    <h1>Exploring html and its new features</h1>
+    <button onclick = "start()">Click here </button>to see the progress..
+    <progress id="pb" max="100" value="40"> <span id ="sp" ></span></progress>
+    
+</body>
+</html>
